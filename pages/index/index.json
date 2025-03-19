@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "番茄钟",
+  "usingComponents": {
+    "custom-tab-bar": "/components/custom-tab-bar/custom-tab-bar",
+    "custom-icon": "/components/icon/icon"
+  }
+} 

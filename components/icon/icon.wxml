@@ -1,0 +1,7 @@
+<view class="icon" style="color: {{color}}; font-size: {{size}}px;">
+  <block wx:if="{{type === 'play'}}">▶️</block>
+  <block wx:elif="{{type === 'pause'}}">⏸️</block>
+  <block wx:elif="{{type === 'reset'}}">🔄</block>
+  <block wx:elif="{{type === 'skip'}}">⏭️</block>
+  <block wx:else>{{type}}</block>
+</view> 

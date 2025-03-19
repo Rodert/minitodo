@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄钟 iOS 应用设计</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .title p {
+            font-size: 1.2rem;
+            color: #6e6e73;
+        }
+        
+        .screens {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .screen {
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            width: 375px;
+            height: 812px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border: 10px solid #1d1d1f;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+        
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 30px;
+            background-color: #1d1d1f;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 10;
+        }
+        
+        .status-bar {
+            height: 44px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .app-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* 主屏幕样式 */
+        .main-screen .app-content {
+            background-color: #fff;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px;
+        }
+        
+        .timer-circle {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: conic-gradient(#ff6347 0% 75%, #f5f5f7 75% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .timer-circle::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .timer-display {
+            position: relative;
+            z-index: 2;
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .timer-label {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ff6347;
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        
+        .control-btn.primary {
+            background-color: #ff6347;
+            color: white;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .control-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mode-selector {
+            display: flex;
+            background-color: #f5f5f7;
+            border-radius: 20px;
+            padding: 5px;
+            margin-top: 40px;
+        }
+        
+        .mode-btn {
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6e6e73;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mode-btn.active {
+            background-color: white;
+            color: #1d1d1f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mode-btn:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .mode-btn.active:hover {
+            background-color: white;
+        }
+        
+        /* 设置屏幕样式 */
+        .settings-screen .app-content {
+            background-color: #f5f5f7;
+            padding: 0;
+        }
+        
+        .settings-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .settings-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .settings-list {
+            background-color: white;
+            border-radius: 15px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+        
+        .settings-item {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f5f5f7;
+            transition: background-color 0.2s;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-item:hover {
+            background-color: #f5f5f7;
+            cursor: pointer;
+        }
+        
+        .settings-item:active {
+            background-color: #e5e5e5;
+        }
+        
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .settings-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        .work-icon {
+            background-color: #ff6347;
+        }
+        
+        .break-icon {
+            background-color: #4CAF50;
+        }
+        
+        .sound-icon {
+            background-color: #2196F3;
+        }
+        
+        .theme-icon {
+            background-color: #9C27B0;
+        }
+        
+        .settings-item-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .settings-item-right {
+            color: #6e6e73;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 统计屏幕样式 */
+        .stats-screen .app-content {
+            background-color: #f5f5f7;
+            padding: 0;
+        }
+        
+        .stats-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stats-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .stats-period {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            border-radius: 15px;
+            margin: 0 20px;
+            padding: 15px;
+        }
+        
+        .period-btn {
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6e6e73;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .period-btn.active {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+        }
+        
+        .period-btn:hover {
+            background-color: rgba(245, 245, 247, 0.5);
+        }
+        
+        .period-btn.active:hover {
+            background-color: #f5f5f7;
+        }
+        
+        .stats-chart {
+            background-color: white;
+            border-radius: 15px;
+            margin: 20px;
+            padding: 20px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .chart-container {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .chart-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e5e5e5;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bar {
+            width: 100%;
+            background-color: #ff6347;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .bar-label {
+            font-size: 0.8rem;
+            color: #6e6e73;
+        }
+        
+        .stats-summary {
+            background-color: white;
+            border-radius: 15px;
+            margin: 0 20px;
+            padding: 20px;
+        }
+        
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .summary-items {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6347;
+        }
+        
+        .summary-label {
+            font-size: 0.9rem;
+            color: #6e6e73;
+            margin-top: 5px;
+        }
+        
+        /* 底部导航栏 */
+        .tab-bar {
+            height: 80px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e5e5e5;
+            background-color: white;
+        }
+        
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .tab-item:hover .tab-icon,
+        .tab-item:hover .tab-label {
+            color: #ff6347;
+            opacity: 0.8;
+        }
+        
+        .tab-item.active:hover .tab-icon,
+        .tab-item.active:hover .tab-label {
+            opacity: 1;
+        }
+        
+        .tab-icon {
+            font-size: 1.5rem;
+            color: #6e6e73;
+        }
+        
+        .tab-icon.active {
+            color: #ff6347;
+        }
+        
+        .tab-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #6e6e73;
+        }
+        
+        .tab-label.active {
+            color: #ff6347;
+        }
+        
+        /* 屏幕切换动画 */
+        .screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>番茄钟 iOS 应用设计</h1>
+            <p>简约风格 · 直观交互 · 美观图标</p>
+        </div>
+        
+        <div class="screens">
+            <!-- 主屏幕 -->
+            <div class="screen main-screen">
+                <div class="notch"></div>
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span><i class="fas fa-battery-full"></i> 100%</span>
+                </div>
+                <div class="app-content">
+                    <div class="timer-container">
+                        <div class="timer-circle">
+                            <div class="timer-display">18:45</div>
+                        </div>
+                        <div class="timer-label">专注时间</div>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <div class="control-btn">
+                            <i class="fas fa-redo-alt"></i>
+                        </div>
+                        <div class="control-btn primary">
+                            <i class="fas fa-pause"></i>
+                        </div>
+                        <div class="control-btn">
+                            <i class="fas fa-forward"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mode-selector">
+                        <div class="mode-btn active">专注</div>
+                        <div class="mode-btn">短休息</div>
+                        <div class="mode-btn">长休息</div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab-item">
+                        <div class="tab-icon active"><i class="fas fa-clock"></i></div>
+                        <div class="tab-label active">计时器</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="tab-label">统计</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-cog"></i></div>
+                        <div class="tab-label">设置</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 统计屏幕 -->
+            <div class="screen stats-screen">
+                <div class="notch"></div>
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span><i class="fas fa-battery-full"></i> 100%</span>
+                </div>
+                <div class="app-content">
+                    <div class="stats-header">
+                        <div class="stats-title">统计</div>
+                    </div>
+                    
+                    <div class="stats-period">
+                        <div class="period-btn">日</div>
+                        <div class="period-btn active">周</div>
+                        <div class="period-btn">月</div>
+                        <div class="period-btn">年</div>
+                    </div>
+                    
+                    <div class="stats-chart">
+                        <div class="chart-title">专注时长（小时）</div>
+                        <div class="chart-container">
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 30%;"></div>
+                                <div class="bar-label">一</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 60%;"></div>
+                                <div class="bar-label">二</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 45%;"></div>
+                                <div class="bar-label">三</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 80%;"></div>
+                                <div class="bar-label">四</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 65%;"></div>
+                                <div class="bar-label">五</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 20%;"></div>
+                                <div class="bar-label">六</div>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar" style="height: 10%;"></div>
+                                <div class="bar-label">日</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-summary">
+                        <div class="summary-title">本周总结</div>
+                        <div class="summary-items">
+                            <div class="summary-item">
+                                <div class="summary-value">24</div>
+                                <div class="summary-label">专注次数</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-value">12.5</div>
+                                <div class="summary-label">专注小时</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-value">85%</div>
+                                <div class="summary-label">完成率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-clock"></i></div>
+                        <div class="tab-label">计时器</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon active"><i class="fas fa-chart-bar"></i></div>
+                        <div class="tab-label active">统计</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-cog"></i></div>
+                        <div class="tab-label">设置</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 设置屏幕 -->
+            <div class="screen settings-screen">
+                <div class="notch"></div>
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span><i class="fas fa-battery-full"></i> 100%</span>
+                </div>
+                <div class="app-content">
+                    <div class="settings-header">
+                        <div class="settings-title">设置</div>
+                    </div>
+                    
+                    <div class="settings-list">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon work-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="settings-item-text">专注时长</div>
+                            </div>
+                            <div class="settings-item-right">
+                                <span>25分钟</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon break-icon">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="settings-item-text">休息时长</div>
+                            </div>
+                            <div class="settings-item-right">
+                                <span>5分钟 / 15分钟</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon sound-icon">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                                <div class="settings-item-text">提示音效</div>
+                            </div>
+                            <div class="settings-item-right">
+                                <span>经典铃声</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon theme-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="settings-item-text">主题颜色</div>
+                            </div>
+                            <div class="settings-item-right">
+                                <span>番茄红</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-clock"></i></div>
+                        <div class="tab-label">计时器</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="tab-label">统计</div>
+                    </div>
+                    <div class="tab-item">
+                        <div class="tab-icon active"><i class="fas fa-cog"></i></div>
+                        <div class="tab-label active">设置</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 页面切换功能
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetScreen = tab.querySelector('.tab-label').textContent;
+                const screens = {
+                    '计时器': '.main-screen',
+                    '统计': '.stats-screen',
+                    '设置': '.settings-screen'
+                };
+                
+                // 更新标签栏状态
+                document.querySelectorAll('.tab-item').forEach(t => {
+                    t.querySelector('.tab-icon').classList.remove('active');
+                    t.querySelector('.tab-label').classList.remove('active');
+                });
+                tab.querySelector('.tab-icon').classList.add('active');
+                tab.querySelector('.tab-label').classList.add('active');
+                
+                // 切换屏幕
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.add('hidden');
+                });
+                document.querySelector(screens[targetScreen]).classList.remove('hidden');
+            });
+        });
+        
+        // 模式切换功能
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // 更新标签文本
+                const timerLabel = document.querySelector('.timer-label');
+                timerLabel.textContent = btn.textContent + '时间';
+            });
+        });
+        
+        // 控制按钮功能
+        let isTimerRunning = true;
+        const playPauseBtn = document.querySelector('.control-btn.primary');
+        playPauseBtn.addEventListener('click', () => {
+            isTimerRunning = !isTimerRunning;
+            const icon = playPauseBtn.querySelector('i');
+            icon.classList.remove(isTimerRunning ? 'fa-play' : 'fa-pause');
+            icon.classList.add(isTimerRunning ? 'fa-pause' : 'fa-play');
+        });
+        
+        // 重置按钮动画
+        const resetBtn = document.querySelector('.fa-redo-alt').parentElement;
+        resetBtn.addEventListener('click', () => {
+            resetBtn.style.transition = 'transform 0.5s';
+            resetBtn.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                resetBtn.style.transition = 'none';
+                resetBtn.style.transform = 'rotate(0deg)';
+            }, 500);
+        });
+        
+        // 统计时间段切换
+        document.querySelectorAll('.period-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // 模拟数据更新动画
+                document.querySelectorAll('.bar').forEach(bar => {
+                    const newHeight = Math.random() * 90 + 10 + '%';
+                    bar.style.transition = 'height 0.5s ease';
+                    bar.style.height = newHeight;
+                });
+            });
+        });
+        
+        // 设置项点击效果
+        document.querySelectorAll('.settings-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // 添加点击波纹效果
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                
+                const rect = item.getBoundingClientRect();
+                ripple.style.left = event.clientX - rect.left + 'px';
+                ripple.style.top = event.clientY - rect.top + 'px';
+                
+                item.style.position = 'relative';
+                item.style.overflow = 'hidden';
+                item.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+    
+    <style>
+        @keyframes ripple {
+            to {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html> 

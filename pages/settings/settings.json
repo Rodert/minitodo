@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "设置",
+  "usingComponents": {
+    "custom-tab-bar": "/components/custom-tab-bar/custom-tab-bar"
+  }
+} 

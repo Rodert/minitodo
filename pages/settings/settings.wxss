@@ -1,0 +1,77 @@
+.container {
+  padding: 0;
+  background-color: #f5f5f7;
+  min-height: 100vh;
+  padding-bottom: 60px; /* 为自定义导航栏留出空间 */
+}
+
+.settings-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-list {
+  background-color: white;
+  border-radius: 15px;
+  margin: 0 20px;
+  overflow: hidden;
+}
+
+.settings-item {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f5f5f7;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-item-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.settings-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.work-icon {
+  background-color: #ff6347;
+}
+
+.break-icon {
+  background-color: #4CAF50;
+}
+
+.sound-icon {
+  background-color: #2196F3;
+}
+
+.theme-icon {
+  background-color: #9C27B0;
+}
+
+.settings-item-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.settings-item-right {
+  color: #6e6e73;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} 

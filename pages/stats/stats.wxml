@@ -1,0 +1,41 @@
+<view class="container">
+  <view class="stats-period">
+    <view class="period-btn {{currentPeriod === '日' ? 'active' : ''}}" bindtap="changePeriod" data-period="日">日</view>
+    <view class="period-btn {{currentPeriod === '周' ? 'active' : ''}}" bindtap="changePeriod" data-period="周">周</view>
+    <view class="period-btn {{currentPeriod === '月' ? 'active' : ''}}" bindtap="changePeriod" data-period="月">月</view>
+    <view class="period-btn {{currentPeriod === '年' ? 'active' : ''}}" bindtap="changePeriod" data-period="年">年</view>
+  </view>
+  
+  <view class="stats-chart">
+    <view class="chart-title">专注时长（小时）</view>
+    <view class="chart-container">
+      <block wx:for="{{chartData}}" wx:key="index">
+        <view class="chart-bar">
+          <view class="bar" style="height: {{item.height}}%;"></view>
+          <view class="bar-label">{{item.label}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <view class="stats-summary">
+    <view class="summary-title">{{currentPeriod}}总结</view>
+    <view class="summary-items">
+      <view class="summary-item">
+        <view class="summary-value">{{summaryData.count}}</view>
+        <view class="summary-label">专注次数</view>
+      </view>
+      <view class="summary-item">
+        <view class="summary-value">{{summaryData.hours}}</view>
+        <view class="summary-label">专注小时</view>
+      </view>
+      <view class="summary-item">
+        <view class="summary-value">{{summaryData.rate}}</view>
+        <view class="summary-label">完成率</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 添加自定义导航栏 -->
+  <custom-tab-bar active="{{1}}"></custom-tab-bar>
+</view> 

@@ -1,0 +1,132 @@
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.timer-circle {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(255, 99, 71, 0.15);
+}
+
+.timer-circle::before {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.timer-display {
+  position: relative;
+  z-index: 2;
+  font-size: 80rpx;
+  font-weight: 700;
+}
+
+.timer-label {
+  margin-top: 20px;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #ff6347;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.control-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36rpx;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.control-btn text {
+  font-size: 24px; /* 调整表情符号大小 */
+}
+
+.control-btn.primary {
+  background-color: #ff6347;
+  color: white;
+}
+
+.mode-selector {
+  display: flex;
+  background-color: #f5f5f7;
+  border-radius: 20px;
+  padding: 5px;
+  margin-top: 40px;
+  width: 90%;
+  max-width: 320px;
+  align-self: center;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 15px;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #6e6e73;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.mode-btn.active {
+  background-color: white;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 图标字体 */
+@font-face {
+  font-family: "iconfont";
+  src: url('data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAAOkAAsAAAAACFwAAANWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDHAqDaIM0ATYCJAMQCwoABCAFhGcHShtpBxEVnPHIfiZkcqrXlmxZrGhZrEp4Xm/Nx/9jzT4vSZv0nY5ACRO0O6dEJeGZhECIkJmQCZXwTOL9/1u7L2aymGaTRCPRJJFIEA2SIBFKgVAjZEJmMc/m9w3tS1eSINoRZvHZXOJNOkwKTApMC3QAR2ACJeCtAXrL3Bj3wGW4TaBplxnVweauQZmCskBcqz6lrJKiUrhkKNSVNRuLuIdKfbpJXgHuBt+Pf2AoZJJKRpy6ey6oQeGX8HMVrf8vWsUigO7PC3YdEUtAIc5qTUeYwWEJpvlXi21AoVCSfAl/Dn5u+rlqkf+8RKnjL48gyRXRCLLdwCa4El/CKiT5pSqJ8MtQksEvW0kWbsXQBGoawDdgJ0XylKrJycL8/FShUNjZ2VE2p2ZnJx8WzwwIyAeWl0eWliYXFoYWF0cWFycWF8fm5gbn5wfn5vrm5nrn5rrn5jrm5trm5lrm5pqbm2ubm2sam2vr6qpr6uqqa+uqauoqq+vKK+tKy+uKS+sKS+ryS+pyC+uy8uuzC+qz8uuzMgvqMvLrM/Lq0/PqUvPqknLrEnPr4nPronPronJqI7JrwrNrQrNrgjJrAjJrfDNrvDJrPDJr3DNq3NJrXNJrnNJrnNJqHNNqHNJq7NNqbNNqbFKrbVKqrZOrrZKrrJIqLRMrLRIqzOMrzWIrzaIrzSIqzMIrzELLzYJKzQKKTf0LTXzzjL1yDL2y9T0zdT0ztD3SNd1T1FyTVJwTlRzjFezj5G1jZG2iZayjpK0jpa0jJK3Cxa1CxCxDxC1DxCxDxSxDxSxDxCxDxCxDxK1CxK0jZKwjZayjZG2iZewj5R0SFJxTVFzT1NwzNT2y8uBK4OvnqwDhV+YFwrdMBQjfMvch/Lf5AMKvzBcI3zI/IPzKAkD4kYWCYsKXLByE/19ZpJKm/7/iFLiCf8UpcAVwUJwCV/BfcVrJFJKm0lTM1HRIGkB4A7yh6Xnmd/CGeCP8e/Amzr3i9IeKbFKoGZYhqTOKrNgSKs0OUKl3hKZF5uub9WGYKBTWWEAw4AaSPs8QDXiDrNgXVEb8QmUgCJpOxLBls1VYsMgVUYcUUjOQQXQwI5JKDSjdQ0XyHLEky2gqpYQQvYQsxDayLMsQEyQVcYg5xCrKMkIIKYhBqEMcQ0ODOqJSqQYyHUwjJJUyoHTTAIUQOUToQBSkzIDYEB0YI0Qp6QB17yGF5HMIS2JhaCplEQTRS5ASKthWZLEYhiE0SnGQcRBWQpmMQBAkQRgIdRBWQ4YG6BCqbVQNyOgwahGkSjJAhZs0gCKRVKWl9Ssb3m8HmsSJHClylGioJc+Qp1CpVJJnKFJqJc8wlDxDCQAAAA==') format('woff2');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 24px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-play:before {
+  content: "\e600";
+}
+
+.icon-pause:before {
+  content: "\e601";
+}
+
+.icon-reset:before {
+  content: "\e602";
+}
+
+.icon-forward:before {
+  content: "\e603";
+}
+
+.container {
+  padding-bottom: 60px; /* 为自定义导航栏留出空间 */
+} 
