@@ -12,3 +12,29 @@ page {
   padding: 20px;
   box-sizing: border-box;
 } 
+
+/* 导航栏图标字体 */
+@font-face {
+  font-family: "iconfont";
+  src: url('data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAAUYAAsAAAAACqAAAATMAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDMgqHVIY6ATYCJAMUCwwABCAFhGcHXhvRCMgekiQlggIKBQA5BgJEBNEYe9/sHjDE40iQCgWpVM0UyZSZmcIm+Yf70bfz97YPfylYhJ3QaT3LWMTB7P+/m51bX/xRY9KDNsnBjRVs6p3V34Wf08z/e1h/AZsPlIvNq02BjTE2bdE6oA7sgAJ6YJvlIthAPk/gN8IbuJFJc1PA4zIBZRPDgtx3NzwFMcJJYbvA5sQUxKxDQeRI9eBGrC7xDIma3lfH+BP8fPgjjIkiyTL+0vt3FrTQ+CV8HVy2/2LvLALm8Vzw2yJjC0IRHxM9B5gP24LK53eoHUBXV5L4JXwdfh1+Hf7//3E7Raxktif/8FKRZCIqGbQLu3i0J/4SPmCmJDXRIR/xK7fxmzCIQMnHxnShfMkgp0g2AJdE1QZXOsE1gMQlwKsFytg6pOYUmrrqyo7Vbq5uqu5adW7+Vd19eA8HBo1BQchsUL/c3OqsrOLs9Nr8upKSMM/d+/bvcenT+98EAXtJuDvp3i6Hs4a72L89qUW3f3nWnuHuQXp0FVv27dpzYPdwDw8t+/YWDQvz1LQDeLjrvdxx84hnZg2a9Pj23Qsa8tBFpPsE0rpn1y68rHv3Zh1BzXoM6f795j2I5khtW/a0Ipr3tOk9hHjapgUPsKaIXbLHdEQa9jTsQXbuwjcVJbvwPCxMV3dgN9LfhUNuoS5Y/f37szw8snx8Sr6+/t6bDIfHx20rKjatW6cRgf35U/4p6h2lNmfEkLhw2Rqztdn5ldkFAcf1G/zC1JVrT3mOPc13++QpPHHfx+x1a/McmVN/PH/G1k/tDYeV6JOO7uTMvv3W7uD+8NlHAz1KLrcXBq7Dre1bOk6dChk9OrJbzKi4UXHiuBHxV+urrzC1VKOGD5nXb5rXx8T0fP5sdmXlmNj+Ayt8fKfXnW+Mjel1rDX8fM2hRU5O41e7VQ6LH2U6q+R8/erxEU6W3TaP3Ny/v23m4DX/Rv+A9Mhq1ZSaqKZy1drJk9dWvX8PPmXVwQvftOqPDwKjLJd/HLXmy88TbTKOXuxU1YYLRl47Oa3O0lm75eO6z5Y/9plmOrU5KD5qTH3p5LlT5Jh+FYfLnZ33lzY+qB9zcEGtwJrVl19svzSmvsw5aXzC+LJTRYdu5LYV1hXnZXUKsC1wObz73e4nEBe43U+8tXqrY1mfkJq2ZZV1jYt9F48t9o0pKwkK3e3qGrq77CZ5VuIecDPgZMIZEe9u/9dQ/tPb6pKTUv8F/OLl1rvZfwA5eeL50aNcmXjRc5CLpFcVBaqnvs5SJfV6MSEFL7+Oa5oBK5lRXQD/v9P2V3bC0rP3JIq9xBo4bSGyGd/IQtyiUOwn1bRLqtkxPl1UPr2YMPbEZFHiOuCaA4UiXmOGIfnqYI2A6+xUlnfIVPEdakqwcFktRd/BIQFXi0cCWQyeYYWLMMYM3+cxh1UEm8hzhANZFZCCDlCSvIGeGYfCyQjHV7A5h5oPkbz0ArmcDFTBJWQwChZOQiZZg09RV4kDEJclCKRh4DNY4UTQmBk8YlYZ42XM+3mYBVMhCNI8h+BY3oFACO2AkmQehZ4ybmJyx0jh16thYzkI0vwYIl5KwGsyMaAk42JEQVMoZE4CWdayfISylDCAABdLICA1TFAOK6goNGxGGLlSFMNLFdNnbxC6ytB8jSJHkauZ1GQjLYhzlLnMuIRvGAAAAAA=') format('woff2');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 24px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-clock:before {
+  content: "\e74e";
+}
+
+.icon-stats:before {
+  content: "\e64f";
+}
+
+.icon-settings:before {
+  content: "\e653";
+} 

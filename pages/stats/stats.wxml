@@ -11,7 +11,9 @@
     <view class="chart-container">
       <block wx:for="{{chartData}}" wx:key="index">
         <view class="chart-bar">
-          <view class="bar" style="height: {{item.height}}%;"></view>
+          <view class="bar" style="height: {{item.height}}%;">
+            <view class="bar-value" wx:if="{{item.hours > 0}}">{{item.hours}}</view>
+          </view>
           <view class="bar-label">{{item.label}}</view>
         </view>
       </block>
@@ -36,6 +38,40 @@
     </view>
   </view>
   
+  <!-- 专注记录列表区域 -->
+  <view class="records-section">
+    <view class="records-header" bindtap="toggleRecordsList">
+      <view class="records-title">专注记录详情</view>
+      <view class="records-toggle">{{showRecordsList ? '收起' : '展开'}}</view>
+    </view>
+    
+    <view class="records-list" wx:if="{{showRecordsList}}">
+      <view class="records-actions" wx:if="{{focusRecords.length > 0}}">
+        <button class="clear-btn" size="mini" bindtap="clearCurrentRecords">清除{{currentPeriod}}记录</button>
+      </view>
+      
+      <block wx:if="{{focusRecords.length > 0}}">
+        <view class="record-item" wx:for="{{focusRecords}}" wx:key="id">
+          <view class="record-time">
+            <text class="record-date">{{item.date}}</text>
+            <text class="record-clock">{{item.timeText}}</text>
+          </view>
+          <view class="record-details">
+            <view class="record-duration">持续: {{item.durationText}}</view>
+            <view class="record-status {{item.completed ? 'completed' : 'incomplete'}}">{{item.statusText}}</view>
+          </view>
+        </view>
+      </block>
+      <view class="no-records" wx:else>当前{{currentPeriod}}没有专注记录</view>
+    </view>
+  </view>
+  
+  <!-- 如果没有数据，显示提示信息 -->
+  <view class="no-data-tip" wx:if="{{chartData.length === 0 || summaryData.count === 0}}">
+    <icon type="info" size="64" color="#ccc"></icon>
+    <text>暂无数据，快去完成第一个番茄钟吧！</text>
+  </view>
+  
   <!-- 添加自定义导航栏 -->
-  <custom-tab-bar active="{{1}}"></custom-tab-bar>
+  <custom-tab-bar active="{{1}}" theme="{{currentPeriod === '日' ? 'shortBreak' : 'work'}}"></custom-tab-bar>
 </view> 

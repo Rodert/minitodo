@@ -3,10 +3,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 80px;
   background: white;
   display: flex;
-  border-top: 1px solid #eee;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #e5e5e5;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .tab-item {
@@ -15,17 +19,55 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 5px;
+  transition: all 0.2s;
+  padding: 10px 0;
 }
 
 .tab-icon {
   font-size: 24px;
+  color: #6e6e73;
+  line-height: 1;
+}
+
+.tab-icon.active {
+  color: #ff6347;
 }
 
 .tab-text {
   font-size: 12px;
+  font-weight: 500;
   color: #6e6e73;
+  line-height: 1;
+  margin-top: 4px;
 }
 
 .tab-text.active {
   color: #ff6347;
+}
+
+.tab-item:hover .tab-icon,
+.tab-item:hover .tab-text {
+  opacity: 0.8;
+}
+
+.tab-item.active:hover .tab-icon,
+.tab-item.active:hover .tab-text {
+  opacity: 1;
+}
+
+/* 为不同页面提供不同颜色主题 */
+.tab-bar.theme-work .tab-icon.active,
+.tab-bar.theme-work .tab-text.active {
+  color: #ff6347; /* 番茄红 */
+}
+
+.tab-bar.theme-shortBreak .tab-icon.active,
+.tab-bar.theme-shortBreak .tab-text.active {
+  color: #4CAF50; /* 森林绿 */
+}
+
+.tab-bar.theme-longBreak .tab-icon.active,
+.tab-bar.theme-longBreak .tab-text.active {
+  color: #2196F3; /* 天空蓝 */
 } 

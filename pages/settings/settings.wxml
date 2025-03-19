@@ -3,56 +3,71 @@
     <view class="settings-item" bindtap="navigateToSetting" data-type="work">
       <view class="settings-item-left">
         <view class="settings-icon work-icon">
-          <text>💼</text>
+          <text class="iconfont icon-work"></text>
         </view>
         <view class="settings-item-text">专注时长</view>
       </view>
       <view class="settings-item-right">
         <text>{{workTime}}分钟</text>
-        <text>▶</text>
+        <text class="iconfont icon-arrow"></text>
       </view>
     </view>
     
     <view class="settings-item" bindtap="navigateToSetting" data-type="break">
       <view class="settings-item-left">
         <view class="settings-icon break-icon">
-          <text>☕</text>
+          <text class="iconfont icon-break"></text>
         </view>
         <view class="settings-item-text">休息时长</view>
       </view>
       <view class="settings-item-right">
         <text>{{shortBreakTime}}分钟 / {{longBreakTime}}分钟</text>
-        <text>▶</text>
+        <text class="iconfont icon-arrow"></text>
       </view>
     </view>
     
     <view class="settings-item" bindtap="navigateToSetting" data-type="sound">
       <view class="settings-item-left">
         <view class="settings-icon sound-icon">
-          <text>🔊</text>
+          <text class="iconfont icon-sound"></text>
         </view>
         <view class="settings-item-text">提示音效</view>
       </view>
       <view class="settings-item-right">
         <text>{{sound}}</text>
-        <text>▶</text>
+        <text class="iconfont icon-arrow"></text>
       </view>
     </view>
     
     <view class="settings-item" bindtap="navigateToSetting" data-type="theme">
       <view class="settings-item-left">
         <view class="settings-icon theme-icon">
-          <text>🎨</text>
+          <text class="iconfont icon-theme"></text>
         </view>
         <view class="settings-item-text">主题颜色</view>
       </view>
       <view class="settings-item-right">
         <text>{{theme}}</text>
-        <text>▶</text>
+        <text class="iconfont icon-arrow"></text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="settings-section-title">数据管理</view>
+  <view class="settings-list">
+    <view class="settings-item warning" bindtap="clearAllData">
+      <view class="settings-item-left">
+        <view class="settings-icon delete-icon">
+          <text class="iconfont icon-delete"></text>
+        </view>
+        <view class="settings-item-text">清除所有番茄钟记录</view>
+      </view>
+      <view class="settings-item-right">
+        <text class="iconfont icon-arrow"></text>
       </view>
     </view>
   </view>
   
   <!-- 添加自定义导航栏 -->
-  <custom-tab-bar active="{{2}}"></custom-tab-bar>
+  <custom-tab-bar active="{{2}}" theme="longBreak"></custom-tab-bar>
 </view> 

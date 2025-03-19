@@ -3,6 +3,10 @@ Component({
     active: {
       type: Number,
       value: 0
+    },
+    theme: {
+      type: String,
+      value: 'work'
     }
   },
   methods: {

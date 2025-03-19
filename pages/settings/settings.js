@@ -53,6 +53,9 @@ Page({
             this.setData({ sound: selectedSound });
             app.globalData.sound = selectedSound;
             
+            // 保存设置到本地
+            wx.setStorageSync('sound_setting', selectedSound);
+            
             wx.showToast({
               title: '设置已保存',
               icon: 'success'
@@ -68,6 +71,9 @@ Page({
             const selectedTheme = themes[res.tapIndex];
             this.setData({ theme: selectedTheme });
             app.globalData.theme = selectedTheme;
+            
+            // 保存设置到本地
+            wx.setStorageSync('theme_setting', selectedTheme);
             
             wx.showToast({
               title: '设置已保存',
@@ -96,18 +102,40 @@ Page({
         });
         
         // 更新全局数据
+        let timerSettings = app.globalData.timerSettings;
         if (settingKey === 'workTime') {
-          app.globalData.timerSettings.work = selectedValue;
+          timerSettings.work = selectedValue;
         } else if (settingKey === 'shortBreakTime') {
-          app.globalData.timerSettings.shortBreak = selectedValue;
+          timerSettings.shortBreak = selectedValue;
         } else if (settingKey === 'longBreakTime') {
-          app.globalData.timerSettings.longBreak = selectedValue;
+          timerSettings.longBreak = selectedValue;
         }
+        app.globalData.timerSettings = timerSettings;
+        
+        // 保存设置到本地存储
+        wx.setStorageSync('timer_settings', timerSettings);
         
         wx.showToast({
           title: '设置已保存',
           icon: 'success'
         });
+      }
+    });
+  },
+  
+  // 清除所有存储的番茄钟数据
+  clearAllData: function() {
+    wx.showModal({
+      title: '清除数据',
+      content: '确定要清除所有番茄钟记录吗？此操作不可撤销。',
+      success: (res) => {
+        if (res.confirm) {
+          wx.removeStorageSync('pomodoro_records');
+          wx.showToast({
+            title: '数据已清除',
+            icon: 'success'
+          });
+        }
       }
     });
   }
