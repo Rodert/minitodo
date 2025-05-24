@@ -106,7 +106,7 @@
 
 ## 关于作者
 
-本项目由 [@YourName](https://github.com/YourName) 开发和维护。
+本项目由 [@JavaPub](https://github.com/Rodert) 开发和维护。
 
 ## 许可证
 
